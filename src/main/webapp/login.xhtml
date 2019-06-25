@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xml:lang="en" lang="en">
+<head>
+    <title>Title</title>
+</head>
+<body>
+
+<ui:composition template="commons.xhtml">
+    <ui:define name="content">
+        <center>
+        <p:panel id="Login">
+            <p:growl id="growl" globalOnly="true"/>
+            <p:panel id="loginGiris">
+                <p:fieldset legend="Kullanıcı Giriş">
+                    <h:form id="kullaniciGiris">
+                        <p:panelGrid columns="3">
+                            <p:outputLabel for="kullanici_adi" value="Kullanıcı Adı:"/>
+                            <p:inputText id="kullanici_adi"
+                                         value="#{kullaniciController.kullanici.kullaniciAdi}"
+                                         required="true"
+                                         requiredMessage="Lütfen Kullanıcı Adını Giriniz."
+                            />
+                            <p:message for="kullanici_adi" display="text, icon"/>
+
+                            <h:outputText id ="pas" value="Şifre: " />
+                            <p:password id="turkishFeedback" value="#{kullaniciController.kullanici.password}"
+                                        required="true" requiredMessage="Lütfen Şifre Giriniz."
+                                        feedback="true"
+                                        promptLabel="Lütfen şifre giriniz" weakLabel="Zayıf"
+                                        goodLabel="Orta seviye" strongLabel="Güçlü"
+                            />
+                            <p:message for="pas" display="text, icon"/>
+
+
+                            <p:commandButton value="Giriş" action="#{loginController.onGiris}" actionListener="index"/>
+                            <p:commandButton value="Kayıt Ol" action="kullaniciTanimla"/>
+
+
+                        </p:panelGrid>
+                    </h:form>
+                </p:fieldset>
+            </p:panel>
+        </p:panel>
+        </center>
+
+    </ui:define>
+</ui:composition>
+
+</body>
+</html>

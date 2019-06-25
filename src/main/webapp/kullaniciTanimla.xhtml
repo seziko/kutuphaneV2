@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xml:lang="en" lang="en">
+<head>
+    <title>Title</title>
+</head>
+<body>
+<ui:composition template="commons.xhtml">
+    <ui:define name="content">
+
+        <p:panel id="kullaniciTanimlamaPanel">
+        <p:growl id="growl" globalOnly="true"/>
+        <p:panel id="kullaniciTanimla">
+            <p:fieldset legend="Kullanıcı Tanımla">
+                <h:form id="kullaniciKaydetForm">
+                    <p:panelGrid columns="3">
+                        <p:outputLabel for="kullanici_adi" value="Kullanıcı Adı:"/>
+                        <p:inputText id="kullanici_adi"
+                                     value="#{kullaniciController.kullanici.kullaniciAdi}"
+                                     required="true"
+                                     requiredMessage="Lütfen Kullanıcı Adını Giriniz."
+                        />
+                        <p:message for="kullanici_adi" display="text, icon"/>
+
+                        <h:outputText id ="pas" value="Şifre: " />
+                        <p:password id="turkishFeedback" value="#{kullaniciController.kullanici.password}"
+                                    required="true" requiredMessage="Lütfen Şifre Giriniz."
+                                    feedback="true"
+                                    promptLabel="Lütfen şifre giriniz" weakLabel="Zayıf"
+                                    goodLabel="Orta seviye" strongLabel="Güçlü"
+                        />
+                        <p:message for="pas" display="text, icon"/>
+
+
+                        <p:outputLabel for="tcKimlik" value="TC Kimlik Numarası:"/>
+                        <p:inputText id="tcKimlik"
+                                   maxlength="11"
+                                   min="11"
+                                   value="#{kullaniciController.kimlik.tcKimlikNo}"
+                                   required="true"
+                                   requiredMessage="Lütfen TC Kimlik Numarasını Giriniz."
+                        />
+                        <p:message for="tcKimlik" display="text, icon"/>
+
+                        <p:outputLabel for="adi" value="Adı:"/>
+                        <p:inputText id="adi"
+                                    value="#{kullaniciController.kimlik.adi}"
+                                    required="true"
+                                    requiredMessage="Lütfen Adınızı Giriniz."
+                        />
+                        <p:message for="adi" display="text, icon"/>
+
+                        <p:outputLabel for="soyAdi" value="Soyadı:"/>
+                        <p:inputText id="soyAdi"
+                                     value="#{kullaniciController.kimlik.soyadi}"
+                                     required="true"
+                                     requiredMessage="Lütfen Soyadınızı Giriniz."
+                        />
+                        <p:message for="soyAdi" display="text, icon"/>
+
+                        <p:outputLabel value="Doğum Tarihi"/>
+                        <p:calendar id="dogum_tarihi_calendar" value="#{kullaniciController.kimlik.dogumTarihi}"
+                        required="true" requiredMessage="Lütfen Doğum Tarihinizi Giriniz.."/>
+                        <p:message for="dogum_tarihi_calendar" display="text,icon"/>
+
+                        <p:outputLabel for="telNo" value="Telefon Numarası:"/>
+                        <p:inputMask id="telNo"
+                                   mask="(999) 999-99-99"
+                                   min="11"
+                                   value="#{kullaniciController.iletisim.cepTelefon}"
+                                   required="true"
+                                   requiredMessage="Lütfen Telefon Numaranızı Giriniz."
+                        />
+                        <p:message for="telNo" display="text, icon"/>
+
+
+                        <p:outputLabel for="eMail" value="Mail Adresi:"/>
+                        <p:inputText id="eMail" value="#{kullaniciController.iletisim.email}"
+                                     required="true" requiredMessage="Lütfen Mail Adresini Giriniz."/>
+                        <p:message for="eMail" display="text,icon"/>
+
+                        <p:outputLabel for="ulke" value="Ülke:"/>
+                        <p:inputText id="ulke" value="#{kullaniciController.adres.ulke}"
+                                     required="true" requiredMessage="Lütfen Ülke Giriniz."/>
+                        <p:message for="ulke" display="text,icon"/>
+
+<!--                        <p:outputLabel for="il" value="İl:"/>-->
+<!--                        <p:inputText for="il" value="#{kullaniciController.adres.il}"-->
+<!--                                          required="true" requiredMessage="Lütfen İl Giriniz."/>-->
+<!--                        <p:message for="il" display="text,icon"/>-->
+
+<!--                        <p:outputLabel for="ilce" value="İlçe"/>-->
+<!--                        <p:inputText id="ilce" value="${kullaniciController.adres.ilce}"-->
+<!--                                     required="true" requiredMessage="Lütfen İlçe Giriniz."/>-->
+<!--                        <p:message for="ilce" display="text,icon"/>-->
+                    </p:panelGrid>
+                    <p:panelGrid columns="3">
+                        <h:commandButton value="Kaydet"
+                                         actionListener="#{kullaniciController.onKaydet}"
+                                         update="growl"
+                        />
+                        <h:commandButton value="Güncelle" actionListener="#{kullaniciController.onUpdate}" update="growl"/>
+                        <h:commandButton value="Temizle" actionListener="#{kullaniciController.onTemizle}" update="growl kullaniciKaydetForm :kullaniciListeleForm"/>
+                    </p:panelGrid>
+                </h:form>
+            </p:fieldset>
+        </p:panel>
+
+            <p:panel id="kullaniciListelePanel">
+                <p:fieldset legend="Kullanıcı Listesi">
+                    <h:form id="kullaniciListeleForm">
+
+                        <p:panel id="listeleButtons">
+                            <p:panelGrid columns="2">
+                                <h:commandButton value="Sil" actionListener="#{kullaniciController.onDelete}" update="growl kullaniciListeleTable"/>
+                                <h:commandButton value="Listele" actionListener="#{kullaniciController.onListele}"/>
+                            </p:panelGrid>
+                        </p:panel>
+
+                        <p:dataTable id="kullaniciListeleTable"
+                                     emptyMessage="Listelenecek Kullanıcı Bulunumamadı..."
+                                     value="#{kullaniciController.kullaniciList}"
+                                     selection="#{kullaniciController.selectedKullanici}"
+                                     var="kul"
+                                     selectionMode="single"
+                                     rowKey="#{kul.id}"
+                        >
+                            <p:ajax event="rowSelect" update=":kullaniciKaydetForm"
+                                    listener="#{kullaniciController.onRowSelected}"/>
+
+                            <p:column headerText="Kullanıcı Adı">
+                                <h:outputText value="#{kullanici.kullanici_adi}"/>
+                            </p:column>
+
+                            <p:column headerText="Adı">
+                                <h:outputText value="#{kullanici.kimlik.adi}"/>
+                            </p:column>
+
+                            <p:column headerText="Soyadı">
+                                <h:outputText value="#{kullanici.kimlik.soyadi}"/>
+                            </p:column>
+
+                            <p:column headerText="Doğum Tarihi">
+                                <h:outputText value="#{kullanici.kimlik.dogumTarihi}"/>
+                            </p:column>
+
+                            <p:column headerText="TC Kimlik Numarası">
+                                <h:outputText value="#{kullanici.kimlik.tcKimlikNo}"/>
+                            </p:column>
+
+                            <p:column headerText="Cep Telefon">
+                                <h:outputText value="#{kullanici.iletisim.cepTelefon}"/>
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:form>
+                </p:fieldset>
+            </p:panel>
+        </p:panel>
+
+    </ui:define>
+</ui:composition>
+</body>
+</html>

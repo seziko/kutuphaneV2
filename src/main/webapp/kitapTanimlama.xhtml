@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:body>
+    <ui:composition template="commons.xhtml">
+<ui:define name="content">
+
+            <p:panel id="kitapTanimlamaPanel">
+                <p:growl id="growl" globalOnly="true"/>
+                <p:panel id="kitapKaydetPanel">
+                    <p:fieldset legend="Kitap Tanımla">
+                        <h:form id="kitapKaydetForm">
+                            <p:panelGrid columns="3">
+                                <p:outputLabel for="adi" value="Kitap Adı:"/>
+                                <p:inputText id="adi"
+                                             value="#{kitapController.kitap.adi}"
+                                             required="true"
+                                             requiredMessage="Lütfen Kitap Adi Giriniz."
+                                />
+                                <p:message for="adi" display="text, icon"/>
+
+                                <p:outputLabel for="yazari" value="Kitap Yazarı:"/>
+                                <p:inputText id="yazari"
+                                             value="#{kitapController.kitap.yazari}"
+                                             required="true"
+                                             requiredMessage="Lütfen Yazarı Giriniz."
+                                />
+                                <p:message for="yazari" display="text, icon"/>
+
+                                <p:outputLabel for="ciltNo" value="Cilt Numarası:"/>
+                                <p:inputText id="ciltNo"
+                                             value="#{kitapController.kitapBilgi.ciltNo}"
+                                             required="true"
+                                             requiredMessage="Lütfen Cilt Numarası Giriniz."
+                                />
+                                <p:message for="ciltNo" display="text, icon"/>
+
+                                <p:outputLabel for="fiyat" value="Fiyat:"/>
+                                <p:spinner id="fiyat"
+                                           min="10"
+                                           value="#{kitapController.kitapBilgi.fiyat}"
+                                           required="true"
+                                           requiredMessage="Lütfen Fiyat Giriniz."
+                                />
+                                <p:message for="fiyat" display="text, icon"/>
+
+                                <p:outputLabel for="yayinTarihi" value="Yayin Tarihi:"/>
+                                <p:calendar id="yayinTarihi"
+                                            value="#{kitapController.kitapBilgi.yayinTarihi}"
+                                            required="true"
+                                            requiredMessage="Lütfen Yayın Tarihi Giriniz."
+                                />
+                                <p:message for="yayinTarihi" display="text, icon"/>
+
+                                <p:outputLabel for="yayinEvi" value="Yayın Evi:"/>
+                                <p:inputText id="yayinEvi"
+                                             value="#{kitapController.kitapBilgi.yayinEvi}"
+                                             required="true"
+                                             requiredMessage="Lütfen Yayın Evini Giriniz."
+                                />
+                                <p:message for="yayinEvi" display="text, icon"/>
+
+                                <p:outputLabel for="sayfaSayisi" value="Sayfa Sayısı:"/>
+                                <p:spinner id="sayfaSayisi"
+                                           min="40"
+                                           value="#{kitapController.kitapBilgi.sayfaSayisi}"
+                                           required="true"
+                                           requiredMessage="Lütfen Sayfa Sayısını Giriniz."
+                                />
+                                <p:message for="sayfaSayisi" display="text, icon"/>
+                            </p:panelGrid>
+
+                        <p:panelGrid columns="3">
+                            <h:commandButton value="Kaydet"
+                                             actionListener="#{kitapController.onKaydet}"
+                                             update="growl"
+                            />
+                            <h:commandButton value="Güncelle" actionListener="#{kitapController.onUpdate}" update="growl"/>
+                            <h:commandButton value="Temizle" actionListener="#{kitapController.onTemizle}" update="growl kitapKaydetForm :kitapListeleForm"/>
+                        </p:panelGrid>
+                    </h:form>
+                </p:fieldset>
+            </p:panel>
+
+            <p:panel id="kitapListelePanel">
+                <p:fieldset legend="Kitap Listesi">
+                    <h:form id="kitapListeleForm">
+
+                        <p:panel id="listeleButtons">
+                            <p:panelGrid columns="2">
+                                <h:commandButton value="Sil" actionListener="#{kitapController.onDelete}" update="growl kitapListeleTable"/>
+                                <h:commandButton value="Listele" actionListener="#{kitapController.onListele}"/>
+                            </p:panelGrid>
+                        </p:panel>
+
+                        <p:dataTable id="kitapListeleTable"
+                                     emptyMessage="Listelenecek Kitap Bulunumamadı..."
+                                     value="#{kitapController.kitapList}"
+                                     selection="#{kitapController.selectedKitap}"
+                                     var="kitap"
+                                     selectionMode="single"
+                                     rowKey="#{kitap.id}"
+                        >
+                            <p:ajax event="rowSelect" update=":kitapKaydetForm"
+                                    listener="#{kitapController.onRowSelected}"/>
+
+                            <p:column headerText="Kitap Adı">
+                                <h:outputText value="#{kitap.adi}"/>
+                            </p:column>
+
+                            <p:column headerText="Kitap Yazarı">
+                                <h:outputText value="#{kitap.yazari}"/>
+                            </p:column>
+
+                            <p:column headerText="Cilt No">
+                                <h:outputText value="#{kitap.kitapBilgi.ciltNo}"/>
+                            </p:column>
+
+                            <p:column headerText="Sayfa Sayısı">
+                                <h:outputText value="#{kitap.kitapBilgi.sayfaSayisi}"/>
+                            </p:column>
+
+                            <p:column headerText="Yayın Evi">
+                                <h:outputText value="#{kitap.kitapBilgi.yayinEvi}"/>
+                            </p:column>
+
+                            <p:column headerText="Fiyat">
+                                <h:outputText value="#{kitap.kitapBilgi.fiyat}"/>
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:form>
+                </p:fieldset>
+            </p:panel>
+
+        </p:panel>
+
+    </ui:define>
+</ui:composition>
+</h:body>
+</html>
